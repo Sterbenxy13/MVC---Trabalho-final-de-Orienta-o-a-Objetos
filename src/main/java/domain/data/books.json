@@ -1,0 +1,25 @@
+[ {
+  "title" : "Admirável Mundo Novo",
+  "authors" : [ {
+    "name" : "Audous Huxley",
+    "homeTown" : "berlim"
+  } ],
+  "publishYear" : 1945,
+  "genres" : [ "Fantasia", "Distopia", "Romance" ],
+  "evaluation" : {
+    "accumulatedGrade" : 21,
+    "evaluationCount" : 5
+  }
+}, {
+  "title" : "A Revolução dos Bichos",
+  "authors" : [ {
+    "name" : "George Orwell",
+    "homeTown" : "paris"
+  } ],
+  "publishYear" : 1890,
+  "genres" : [ "Distopia" ],
+  "evaluation" : {
+    "accumulatedGrade" : 13,
+    "evaluationCount" : 3
+  }
+} ]
