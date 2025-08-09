@@ -22,5 +22,10 @@ public class TokenMenuInstruction extends TokenViewInstruction {
     public void setTableData(TableData tableData) {
         this.tableData = tableData;
     }
+
+    @Override
+    public String toString() {
+        return super.toString() + ": TokenMenuInstruction{" + "tableData=" + tableData + '}';
+    }
     
 }

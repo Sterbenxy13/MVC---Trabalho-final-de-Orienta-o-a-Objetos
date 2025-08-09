@@ -38,6 +38,16 @@ public class TableData {
     public void setRows(List<EntityData> rows) {
         this.rows = rows;
     }
+
+    @Override
+    public String toString() {
+        String columnsToPrint = "";
+        for (String c: columns) {
+            columnsToPrint += c;
+        }
+        return "TableData{" + "columns=" + columnsToPrint + ", rows=" + rows + '}';
+    }
+    
     
     
     

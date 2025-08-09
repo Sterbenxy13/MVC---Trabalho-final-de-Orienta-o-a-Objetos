@@ -58,4 +58,12 @@ public class EntityData<E extends IEntity> {
     private boolean contains(String identifier) {
         return this.data.get(identifier) != null;
     }
+
+    @Override
+    public String toString() {
+        return "EntityData{" + "data=" + data + ", entityIndex=" + entityIndex + '}';
+    }
+    
+    
+    
 }

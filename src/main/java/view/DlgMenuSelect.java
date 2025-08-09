@@ -2,7 +2,6 @@
 package view;
 
 import controller.globals.Contexts;
-import controller.viewController.TokenFrameResponse;
 import controller.viewController.TokenViewLoading;
 import javax.swing.JFrame;
 import view.dialogs.AbstractDialog;
@@ -13,7 +12,7 @@ import view.tokens.TokenViewResponse;
  * @author Sterbenxy13
  */
 public class DlgMenuSelect extends AbstractDialog {
-    private TokenViewLoading response;
+    private TokenViewResponse response;
     
     /**
      * Diálogo para seleção de menus.
@@ -22,19 +21,14 @@ public class DlgMenuSelect extends AbstractDialog {
         super(parent, true);
         initComponents();
         this.setTitle("Loren Library");
-        this.response = new TokenViewLoading();
+        this.response = new TokenViewResponse(Contexts.START);
     }
     
     @Override
     public TokenViewResponse getResponse() {
-        return new TokenViewResponse(Contexts.START);
-    }
-    
-    public TokenViewLoading getRoute() {
-//        this.dispose();
         return this.response;
     }
-    
+        
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

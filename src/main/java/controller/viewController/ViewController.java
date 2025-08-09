@@ -4,6 +4,7 @@ package controller.viewController;
 import controller.exceptions.InvalidActionException;
 import controller.globals.Actions;
 import controller.globals.Contexts;
+import logger.Logger;
 import view.DlgMenuSelect;
 import view.FrMainFrame;
 import view.dialogs.AbstractDialog;
@@ -94,6 +95,7 @@ public final class ViewController {
     }
     
     private void invokeMenu(TokenMenuInstruction menuInstruction) {
+        Logger.log("ViewController.invokeMenu(): " + menuInstruction.toString());
         AbstractMenuDialog menu = new AbstractMenuDialog(this.mainFrame, menuInstruction);
         menu.setVisible(true);
         this.currentDialog = menu;

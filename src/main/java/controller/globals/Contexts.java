@@ -7,15 +7,10 @@ package controller.globals;
  */
 public class Contexts {
     
-    public static String START = "START";
+    public static final String START = "START";
+    public static final String NONE = "NONE_CONTEXT";
+    public static final String EXIT = "EXIT";
     
-    public static String EXIT = "EXIT";
-    
-    public static String MENU = "MENU";
-    public static String FORM = "FORM";
-    
-//    public static String USER = "USER";
-//    public static String BOOK = "BOOK";
-    
-    
+    public static final String MENU = "MENU";
+    public static final String FORM = "FORM";
 }

@@ -4,7 +4,6 @@ package model.entity;
 import java.lang.reflect.Field;
 import java.util.Dictionary;
 import java.util.Hashtable;
-import model.entity.Author;
 import java.util.List;
 import model.Evaluation;
 
@@ -61,12 +60,12 @@ public class Book implements IEntity {
     }
     
     public void edit(String jsonData) {
-        Book temp = model.persistence.JSONService.fromJson(jsonData, Book.class).get(0);
-        this.title = temp.getTitle();
-        this.authors = temp.getAuthors();
-        this.publishYear = temp.getPublishYear();
-        this.genres = temp.getGenres();
-        this.evaluation = temp.getEvaluation();        
+//        Book temp = model.persistence.JSONService.fromJson(jsonData, Book.class).get(0);
+//        this.title = temp.getTitle();
+//        this.authors = temp.getAuthors();
+//        this.publishYear = temp.getPublishYear();
+//        this.genres = temp.getGenres();
+//        this.evaluation = temp.getEvaluation();        
     }
     
     public void addGrade(Integer grade) {
@@ -122,7 +121,7 @@ public class Book implements IEntity {
     
     @Override
     public String[] getFieldsNames() {
-        Field[] fields = this.getClass().getFields();        
+        Field[] fields = this.getClass().getDeclaredFields();        
         String[] fieldsNames = new String[fields.length];
         
         int i = 0;

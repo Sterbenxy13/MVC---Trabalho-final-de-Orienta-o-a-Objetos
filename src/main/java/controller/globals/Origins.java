@@ -7,6 +7,8 @@ package controller.globals;
  */
 public class Origins {
     
-    public static String USER = "USER";
+    public static final String USER = "USER";
+    public static final String BOOK = "BOOK";
+    public static final String NONE = "NONE_ORIGIN";
     
 }

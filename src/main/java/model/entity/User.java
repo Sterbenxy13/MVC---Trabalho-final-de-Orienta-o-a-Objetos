@@ -2,11 +2,10 @@
 package model.entity;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.Dictionary;
 import java.util.Hashtable;
-import model.entity.Book;
 import java.util.List;
+import logger.Logger;
 
 /**
  *
@@ -52,10 +51,10 @@ public class User implements IEntity{
     
     
     public void edit(String jsonData) {
-        User temp = model.persistence.JSONService.fromJson(jsonData, User.class).get(0);
-        this.name = temp.getName();
-        this.favoriteGenres = temp.getFavoriteGenres();
-        this.readedBooks = temp.getReadedBooks();
+//        User temp = model.persistence.JSONService.fromJson(jsonData, User.class).get(0);
+//        this.name = temp.getName();
+//        this.favoriteGenres = temp.getFavoriteGenres();
+//        this.readedBooks = temp.getReadedBooks();
     }
     
     public void addFavoriteGenre(String genre) {
@@ -104,7 +103,7 @@ public class User implements IEntity{
     
     @Override
     public String[] getFieldsNames() {
-        Field[] fields = this.getClass().getFields();        
+        Field[] fields = this.getClass().getDeclaredFields();        
         String[] fieldsNames = new String[fields.length];
         
         int i = 0;
@@ -122,8 +121,9 @@ public class User implements IEntity{
         
         String[] fieldsNames = this.getFieldsNames();
         
-        for (String name: fieldsNames) {
-            fields.put(name, this.getValueInReference(name));
+        for (String fname: fieldsNames) {
+            Logger.log("User.getFields() -> fieldName: " + fname);
+            fields.put(fname, this.getValueInReference(fname));
         }
         
         return fields;

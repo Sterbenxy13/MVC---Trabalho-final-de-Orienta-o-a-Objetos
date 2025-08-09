@@ -23,6 +23,8 @@ public interface IEntity {
      */
     Object getValueInReference(String fieldName);
     
+//    String getClassTitle();
+    
     String[] getFieldsNames();
     
     Dictionary<String, Object> getFields();

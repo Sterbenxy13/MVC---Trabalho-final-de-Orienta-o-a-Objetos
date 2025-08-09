@@ -1,7 +1,8 @@
 
 package controller.modelController;
 
-import view.components.tableModel.TableData;
+import controller.globals.Contexts;
+import controller.globals.Origins;
 
 /**
  *
@@ -11,20 +12,17 @@ public class TokenModelResponse {
     private String title;
     private String context;
     private String origin;
-    private TableData tableData;
 
     public TokenModelResponse() {
         this.title = "NULL";
-        this.context = "NULL";
-        this.origin = "NULL";
-        this.tableData = new TableData();
+        this.context = Contexts.NONE;
+        this.origin = Origins.NONE;
     }
 
-    public TokenModelResponse(String title, String context, String origin, TableData tableData) {
+    public TokenModelResponse(String title, String context, String origin) {
         this.title = title;
         this.context = context;
         this.origin = origin;
-        this.tableData = tableData;
     }
 
     public String getTitle() {
@@ -39,10 +37,6 @@ public class TokenModelResponse {
         return origin;
     }
 
-    public TableData getTableData() {
-        return tableData;
-    }
-
     public void setTitle(String title) {
         this.title = title;
     }
@@ -55,9 +49,11 @@ public class TokenModelResponse {
         this.origin = origin;
     }
 
-    public void setTableData(TableData tableData) {
-        this.tableData = tableData;
+    @Override
+    public String toString() {
+        return "TokenModelResponse{" + "title=" + title + ", context=" + context + ", origin=" + origin + '}';
     }
+    
     
     
     

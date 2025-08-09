@@ -51,6 +51,13 @@ public class TokenViewInstruction {
     public void setOrigin(String origin) {
         this.origin = origin;
     }
+
+    @Override
+    public String toString() {
+        return "TokenViewInstruction{" + "title=" + title + ", context=" + context + ", origin=" + origin + '}';
+    }
+    
+    
     
     
     

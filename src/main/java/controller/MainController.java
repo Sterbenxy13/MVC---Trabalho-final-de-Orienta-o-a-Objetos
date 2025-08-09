@@ -5,13 +5,12 @@ import controller.modelController.ModelController;
 import controller.exceptions.InvalidActionException;
 import controller.exceptions.InvalidContextException;
 import controller.globals.Contexts;
-import controller.globals.Origins;
+import controller.modelController.TokenModelFormResponse;
+import controller.modelController.TokenModelMenuResponse;
 import controller.modelController.TokenModelResponse;
 import controller.viewController.EntityData;
 import controller.viewController.ViewController;
-import java.util.ArrayList;
-import java.util.List;
-import javax.naming.Context;
+import logger.Logger;
 import view.components.tableModel.TableData;
 import view.tokens.TokenFormInstruction;
 import view.tokens.TokenMenuInstruction;
@@ -37,6 +36,8 @@ public class MainController {
     public void init() {
 //        TokenFrameResponse viewToken = this.viewController.getResponse();
 
+        Logger.setEnable(true);
+
         TokenViewInstruction viewInstruction = new TokenViewInstruction();
     
         this.viewController.init();
@@ -51,11 +52,12 @@ public class MainController {
                     return;
                 }
                 
-                System.out.println(viewResponse.toString());
                 
                 TokenModelResponse modelResponse = instructModel(viewResponse);
                 
                 viewInstruction = generateViewToken(modelResponse);
+                
+                Logger.log("MainController.init(): " + viewInstruction.toString());
                 
                 continue;
                 
@@ -83,28 +85,28 @@ public class MainController {
     }
     
     private TokenModelResponse instructModel(TokenViewResponse viewRequest) {
-        TokenModelResponse response = new TokenModelResponse();
         
-        if (viewRequest.getContext().equals(Contexts.START)) {
-            response.setTitle("Usuário");
-            response.setContext(Contexts.MENU);
-            response.setOrigin(Origins.USER);
-            
-            String[] cols = {"nome", "Gêneros Favoritos", "Livros Lidos"};
-            List<EntityData> rows = new ArrayList<>();
-            
-            UserManager man = new UserManager();
-            
-            rows.addAll(man.getAllEntityData());
-            
-            TableData data = new TableData(cols, rows);
-            
-            response.setTableData(data);
-        }
+        TokenModelResponse response = this.modelController.getResponse(viewRequest);
+        
+//        if (viewRequest.getContext().equals(Contexts.START)) {
+//            response.setTitle("Usuário");
+//            response.setContext(Contexts.MENU);
+//            response.setOrigin(Origins.USER);
+//            
+//            String[] cols = {"nome", "Gêneros Favoritos", "Livros Lidos"};
+//            List<EntityData> rows = new ArrayList<>();
+//            
+//            UserManager man = new UserManager();
+//            
+//            rows.addAll(man.getAllEntityData());
+//            
+//            TableData data = new TableData(cols, rows);
+//            
+//            response.setTableData(data);
+//        }
                 
         
         return response;
-//        return this.modelController.getResponse();
     }
     
     private TokenViewResponse instructView(TokenViewInstruction viewInstruction) {
@@ -114,13 +116,20 @@ public class MainController {
     
     private TokenViewInstruction generateViewToken(TokenModelResponse modelResponse) {
         TokenViewInstruction viewInstruction;
+                
         if (modelResponse.getContext().equals(Contexts.MENU)) {
             viewInstruction = new TokenMenuInstruction();
-            ((TokenMenuInstruction) viewInstruction).setTableData(modelResponse.getTableData());
+            TableData data = ((TokenModelMenuResponse) modelResponse).getTableData();
+            ((TokenMenuInstruction) viewInstruction).setTableData(data);
             
-        } else {
+        } else if (modelResponse.getContext().equals(Contexts.FORM)) {
             viewInstruction = new TokenFormInstruction();
-            ((TokenFormInstruction) viewInstruction).setEntityData(modelResponse.getEntityData());
+            EntityData data = ((TokenModelFormResponse) modelResponse).getEntityData();
+            String action = ((TokenModelFormResponse) modelResponse).getAction();
+            ((TokenFormInstruction) viewInstruction).setEntityData(data);
+            ((TokenFormInstruction) viewInstruction).setAction(action);
+        } else {
+            viewInstruction = new TokenViewInstruction();
         }
         
         viewInstruction.setTitle(modelResponse.getTitle());

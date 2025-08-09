@@ -1,12 +1,10 @@
 
 package controller.viewController;
 
-import controller.IEntityController;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Dictionary;
 import java.util.Hashtable;
-import model.entity.IEntity;
 import view.menus.AbstractMenuDialog;
 import view.menus.DlgBookMenu;
 import view.FrMainFrame;
