@@ -1,5 +1,6 @@
 
 import controller.MainController;
+import logger.Logger;
 
 
 /**
@@ -27,6 +28,7 @@ public class ProjetoFinal {
         
         */
         
+        Logger.setEnable(true);
         MainController mainController = new MainController();
         mainController.init();
         

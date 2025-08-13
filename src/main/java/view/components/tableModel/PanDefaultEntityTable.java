@@ -1,9 +1,6 @@
 
 package view.components.tableModel;
 
-import controller.viewController.EntityData;
-import java.util.List;
-
 /**
  *
  * @author Sterbenxy13

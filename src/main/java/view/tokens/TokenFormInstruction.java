@@ -15,6 +15,11 @@ public class TokenFormInstruction extends TokenViewInstruction {
         super();
         this.entityData = new EntityData();        
     }
+
+    public TokenFormInstruction(TokenViewInstruction other) {
+        super(other);
+        this.entityData = new EntityData();
+    }
     
     public TokenFormInstruction(
             String title,

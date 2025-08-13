@@ -3,7 +3,8 @@ package controller.viewController;
 
 import controller.exceptions.InvalidActionException;
 import controller.globals.Actions;
-import controller.globals.Contexts;
+import controller.globals.Context;
+import controller.globals.Route;
 import view.DlgMenuSelect;
 import view.FrMainFrame;
 import view.dialogs.AbstractDialog;
@@ -21,69 +22,49 @@ import view.tokens.TokenViewResponse;
  * @author Sterbenxy13
  */
 public final class ViewController {
-
-//    private MenuController menuController;
-//    private DialogController dialogController;
     private FrMainFrame mainFrame;
     private AbstractDialog currentDialog;
+    
+    private String route;
     
     
     public ViewController() {
         this.mainFrame = new FrMainFrame();
-        
-//        this.menuController = new MenuController(this.mainFrame);
-//        this.dialogController = new DialogController(this.mainFrame);
+        this.route = Route.START;
     }
     
     public void init() {
         this.mainFrame.setVisible(true);
     }
     
-    public TokenViewResponse getResponse() {
-//        TokenFrameResponse response = new TokenFrameResponse();
-//        
-//        while (token.getAction().equals("EXIT") == false) {
-//            this.setView(token);
-//
-//            response = this.currentDialog.getResponse();
-//
-//            if (response.getAction().equals("EXIT")) {
-//                return response;
-//            }
-//            if (response.getAction().equals("BACK")) {
-//                token = new TokenViewLoading("");
-//                continue;
-//            }
-//            if (response.getAction().equals("CONFIRM")) {
-//                return response;
-//            }
-//        }
-        
+    public TokenViewResponse getResponse() {        
         return this.currentDialog.getResponse();
     }
     
     public void setView(TokenViewInstruction token) {
         
-        if (token.getContext().equals(Contexts.EXIT)) {
+        if (token.getContext().equals(Route.EXIT)) {
             this.mainFrame.dispose();
             return;
         }
         
-        if (token.getContext().equals(Contexts.START)) {
+        if (token.getContext().equals(Route.START)) {
             this.invokeStartMenu();
             return;
         }
-        if (token.getContext().equals(Contexts.MENU)) {
+        if (token.getContext().equals(Route.MENU)) {
             this.invokeMenu((TokenMenuInstruction) token);
             return;
         }
-        if (token.getContext().equals(Contexts.FORM)) {
+        if (token.getContext().equals(Route.FORM)) {
             this.invokeForm((TokenFormInstruction) token);
             return;
         }
         
 //        throws new InvalidContextException(token.getContext());
-        
+
+//        this.route = 
+
         return;
     }
     

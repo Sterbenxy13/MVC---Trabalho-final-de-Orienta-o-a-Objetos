@@ -15,12 +15,22 @@ public class TokenMenuInstruction extends TokenViewInstruction {
         this.tableData = new TableData();
     }
 
+    public TokenMenuInstruction(TokenViewInstruction other) {
+        super(other);
+        this.tableData = new TableData();
+    }
+
     public TableData getTableData() {
         return tableData;
     }
 
     public void setTableData(TableData tableData) {
         this.tableData = tableData;
+    }
+
+    @Override
+    public String toString() {
+        return super.toString() + ": TokenMenuInstruction{" + "tableData=" + tableData + '}';
     }
     
 }

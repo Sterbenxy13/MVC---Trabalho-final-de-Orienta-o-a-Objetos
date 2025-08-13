@@ -4,14 +4,14 @@ package controller;
 import controller.modelController.ModelController;
 import controller.exceptions.InvalidActionException;
 import controller.exceptions.InvalidContextException;
-import controller.globals.Contexts;
-import controller.globals.Origins;
+import controller.globals.Actions;
+import controller.globals.Route;
+import controller.modelController.TokenModelFormResponse;
+import controller.modelController.TokenModelMenuResponse;
 import controller.modelController.TokenModelResponse;
 import controller.viewController.EntityData;
 import controller.viewController.ViewController;
-import java.util.ArrayList;
-import java.util.List;
-import javax.naming.Context;
+import logger.Logger;
 import view.components.tableModel.TableData;
 import view.tokens.TokenFormInstruction;
 import view.tokens.TokenMenuInstruction;
@@ -37,6 +37,8 @@ public class MainController {
     public void init() {
 //        TokenFrameResponse viewToken = this.viewController.getResponse();
 
+
+        // começa em START
         TokenViewInstruction viewInstruction = new TokenViewInstruction();
     
         this.viewController.init();
@@ -46,19 +48,58 @@ public class MainController {
             try {
                 viewResponse = this.instructView(viewInstruction);
                 
-                if (viewResponse.getContext().equals(Contexts.EXIT)) {
+                if (viewResponse.getRoute().equals(Route.EXIT)) {
                     this.exitProgram();
                     return;
                 }
                 
-                System.out.println(viewResponse.toString());
+                Logger.log("MainController.init() -> viewResponse.getOrigin(): " + viewResponse.getContext());
                 
-                TokenModelResponse modelResponse = instructModel(viewResponse);
+                if (viewResponse.getAction().equals(Actions.NONE)) {
+                    TableData menuData = this.manageMenuRequest(viewResponse.getContext());
+                    viewInstruction = new TokenMenuInstruction(viewInstruction);
+                    ((TokenMenuInstruction) viewInstruction).setTableData(menuData);
+                    continue;
+                    
+                } else {
+                    EntityData formData = this.manageFormRequest(viewResponse.getContext(), viewResponse.getEntityIndex());
+                    viewInstruction = new TokenFormInstruction(viewInstruction);
+                    ((TokenFormInstruction) viewInstruction).setEntityData(formData);
+                    continue;
+                }
                 
-                viewInstruction = generateViewToken(modelResponse);
-                
-                continue;
-                
+//                System.out.println("OXI SAIU DO SWITCH EM MainController.init()");
+//                
+//                
+//                
+//                if (viewResponse.getContext().equals(Route.EXIT)) {
+//                    this.exitProgram();
+//                    return;
+//                }
+//                String lastContext = viewResponse.getContext();
+//                
+//                
+//                
+//                TokenModelResponse modelResponse = instructModel(viewResponse);
+//                viewInstruction = generateViewToken(modelResponse);
+//                
+//                viewResponse = this.instructView(viewInstruction);
+//                
+//                if (viewResponse.getContext().equals(Route.EXIT)) {
+//                    this.exitProgram();
+//                    return;
+//                }                
+//                
+//                if (viewResponse.getAction().equals(Actions.BACK)) {
+//                    viewInstruction.setContext(lastContext);
+//                }
+//                
+//                
+//                
+//                Logger.log("MainController.init(): " + viewInstruction.toString());
+//                
+//                continue;
+//                
                 
             } catch (InvalidActionException | InvalidContextException ex) {
                 this.exitProgram();
@@ -82,29 +123,47 @@ public class MainController {
 
     }
     
-    private TokenModelResponse instructModel(TokenViewResponse viewRequest) {
-        TokenModelResponse response = new TokenModelResponse();
+    private TokenViewInstruction manageStartRequest() {
+        return new TokenViewInstruction();
+    }
+    
+    private TableData manageMenuRequest(String origin) {
+        // abre menu 
+        // view -> (MENU, origin) : model -> (MENU, origin, Tdata) (Tdata)
+        return this.modelController.getTableData(origin);
         
-        if (viewRequest.getContext().equals(Contexts.START)) {
-            response.setTitle("Usuário");
-            response.setContext(Contexts.MENU);
-            response.setOrigin(Origins.USER);
-            
-            String[] cols = {"nome", "Gêneros Favoritos", "Livros Lidos"};
-            List<EntityData> rows = new ArrayList<>();
-            
-            UserManager man = new UserManager();
-            
-            rows.addAll(man.getAllEntityData());
-            
-            TableData data = new TableData(cols, rows);
-            
-            response.setTableData(data);
-        }
+//        ((TokenMenuInstruction) viewInstruction).setTableData(menuData);
+//        
+//        return viewInstruction;
+    }
+    
+    private EntityData manageFormRequest(String origin, Integer entityId) {
+        return this.modelController.getEntityData(origin, entityId);
+    }
+    
+    private TokenModelResponse instructModel(TokenViewResponse viewRequest) {
+        
+        TokenModelResponse response = this.modelController.getResponse(viewRequest);
+        
+//        if (viewRequest.getContext().equals(Route.START)) {
+//            response.setTitle("Usuário");
+//            response.setContext(Route.MENU);
+//            response.setOrigin(Origins.USER);
+//            
+//            String[] cols = {"nome", "Gêneros Favoritos", "Livros Lidos"};
+//            List<EntityData> rows = new ArrayList<>();
+//            
+//            UserManager man = new UserManager();
+//            
+//            rows.addAll(man.getAllEntityData());
+//            
+//            TableData data = new TableData(cols, rows);
+//            
+//            response.setTableData(data);
+//        }
                 
         
         return response;
-//        return this.modelController.getResponse();
     }
     
     private TokenViewResponse instructView(TokenViewInstruction viewInstruction) {
@@ -114,13 +173,20 @@ public class MainController {
     
     private TokenViewInstruction generateViewToken(TokenModelResponse modelResponse) {
         TokenViewInstruction viewInstruction;
-        if (modelResponse.getContext().equals(Contexts.MENU)) {
+                
+        if (modelResponse.getContext().equals(Route.MENU)) {
             viewInstruction = new TokenMenuInstruction();
-            ((TokenMenuInstruction) viewInstruction).setTableData(modelResponse.getTableData());
+            TableData data = ((TokenModelMenuResponse) modelResponse).getTableData();
+            ((TokenMenuInstruction) viewInstruction).setTableData(data);
             
-        } else {
+        } else if (modelResponse.getContext().equals(Route.FORM)) {
             viewInstruction = new TokenFormInstruction();
-            ((TokenFormInstruction) viewInstruction).setEntityData(modelResponse.getEntityData());
+            EntityData data = ((TokenModelFormResponse) modelResponse).getEntityData();
+            String action = ((TokenModelFormResponse) modelResponse).getAction();
+            ((TokenFormInstruction) viewInstruction).setEntityData(data);
+            ((TokenFormInstruction) viewInstruction).setAction(action);
+        } else {
+            viewInstruction = new TokenViewInstruction();
         }
         
         viewInstruction.setTitle(modelResponse.getTitle());

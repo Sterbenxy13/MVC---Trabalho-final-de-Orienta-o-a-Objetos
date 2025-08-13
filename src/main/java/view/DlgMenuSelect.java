@@ -1,9 +1,7 @@
 
 package view;
 
-import controller.globals.Contexts;
-import controller.viewController.TokenFrameResponse;
-import controller.viewController.TokenViewLoading;
+import controller.globals.Route;
 import javax.swing.JFrame;
 import view.dialogs.AbstractDialog;
 import view.tokens.TokenViewResponse;
@@ -13,7 +11,7 @@ import view.tokens.TokenViewResponse;
  * @author Sterbenxy13
  */
 public class DlgMenuSelect extends AbstractDialog {
-    private TokenViewLoading response;
+    private TokenViewResponse response;
     
     /**
      * Diálogo para seleção de menus.
@@ -22,19 +20,14 @@ public class DlgMenuSelect extends AbstractDialog {
         super(parent, true);
         initComponents();
         this.setTitle("Loren Library");
-        this.response = new TokenViewLoading();
+        this.response = new TokenViewResponse(Route.START);
     }
     
     @Override
     public TokenViewResponse getResponse() {
-        return new TokenViewResponse(Contexts.START);
-    }
-    
-    public TokenViewLoading getRoute() {
-//        this.dispose();
         return this.response;
     }
-    
+        
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -109,22 +102,22 @@ public class DlgMenuSelect extends AbstractDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnUsersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUsersActionPerformed
-        this.response.setOrigin("USER");
+        this.response.setContext("USER");
         this.dispose();
     }//GEN-LAST:event_btnUsersActionPerformed
 
     private void btnBooksActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBooksActionPerformed
-        this.response.setOrigin("BOOK");
+        this.response.setContext("BOOK");
         this.dispose();
     }//GEN-LAST:event_btnBooksActionPerformed
 
     private void btnLibraryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLibraryActionPerformed
-        this.response.setOrigin("LIBRARY");
+        this.response.setContext("LIBRARY");
         System.out.println("LIBRARY ACCESS DENIED");
     }//GEN-LAST:event_btnLibraryActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        this.response.setOrigin("EXIT");
+        this.response.setContext("EXIT");
         this.dispose();
     }//GEN-LAST:event_formWindowClosing
 
