@@ -6,8 +6,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
+ * Classe para encapsular as informações necessárias para a criação da
+ * PanDefaultEntityTable.
+ * 
  * @author Sterbenxy13
+ * @see view.components.tableModel.PanDefaultEntityTable#PanDefaultEntityTable() 
  */
 public class TableData {
     private String[] columns;

@@ -122,7 +122,6 @@ public class User implements IEntity{
         String[] fieldsNames = this.getFieldsNames();
         
         for (String fname: fieldsNames) {
-            Logger.log("User.getFields() -> fieldName: " + fname);
             fields.put(fname, this.getValueInReference(fname));
         }
         

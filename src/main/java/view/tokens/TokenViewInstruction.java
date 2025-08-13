@@ -16,6 +16,12 @@ public class TokenViewInstruction {
         this.origin = "NULL";
     }
     
+    public TokenViewInstruction(TokenViewInstruction other) {
+        this.title = other.getTitle();
+        this.context = other.getContext();
+        this.origin = other.getOrigin();
+    }
+    
     public TokenViewInstruction(String context) {
         this.title = "NULL";
         this.context = "EXIT";

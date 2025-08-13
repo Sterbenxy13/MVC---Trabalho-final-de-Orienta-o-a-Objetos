@@ -3,7 +3,6 @@ package controller.modelController.entityController;
 
 import controller.viewController.EntityData;
 import java.util.List;
-import logger.Logger;
 import model.entity.IEntity;
 import model.serializer.SerializerEntityData;
 import model.serializer.SerializerTableData;
@@ -36,9 +35,7 @@ public abstract class AbstractEntityController {
     
     public TableData getTableData() {
         SerializerTableData serializer = new SerializerTableData();
-        Logger.log("AbstractEntityController.getTableData() -> entityList: " + this.entityList.toString());
         TableData data = serializer.serialize(this.entityList);
-        Logger.log("AbstractEntityController.getTableData() -> data: " + data.toString());
         return data;
     }
     

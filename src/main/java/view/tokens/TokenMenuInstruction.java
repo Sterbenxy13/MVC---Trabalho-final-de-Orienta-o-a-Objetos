@@ -15,6 +15,11 @@ public class TokenMenuInstruction extends TokenViewInstruction {
         this.tableData = new TableData();
     }
 
+    public TokenMenuInstruction(TokenViewInstruction other) {
+        super(other);
+        this.tableData = new TableData();
+    }
+
     public TableData getTableData() {
         return tableData;
     }

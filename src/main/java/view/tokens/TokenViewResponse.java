@@ -1,48 +1,52 @@
 
 package view.tokens;
 
+import controller.globals.Actions;
+import controller.globals.Route;
+import controller.globals.Context;
+
 /**
  *
  * @author Sterbenxy13
  */
 public class TokenViewResponse {
+    private String route;
     private String context;
-    private String origin;
     private String action;
     private Integer entityIndex;
 
     public TokenViewResponse() {
-        this.context = "";
-        this.origin = "";
-        this.action = "";
+        this.route = Route.START;
+        this.context = Context.NONE;
+        this.action = Actions.NONE;
         this.entityIndex = -1;
     }
 
     @Override
     public String toString() {
-        return "TokenViewResponse{" + "context=" + context + ", origin=" + origin + ", action=" + action + ", entityIndex=" + entityIndex + '}';
+        return "TokenViewResponse{" + "route=" + route + ", context=" + context + ", action=" + action + ", entityIndex=" + entityIndex + '}';
     }
     
     public TokenViewResponse(String context) {
-        this.context = context;
-        this.origin = "";
-        this.action = "";
+        this.route = context;
+        this.context = Context.NONE;
+        this.action = Actions.NONE;
         this.entityIndex = -1;
     }
     
     public TokenViewResponse(String context, String origin, String action, Integer entityIndex) {
-        this.context = context;
-        this.origin = origin;
+        this.route = context;
+        this.context = origin;
         this.action = action;
         this.entityIndex = entityIndex;
     }
 
-    public String getContext() {
-        return context;
+    public String getRoute() {
+        return route;
     }
 
-    public String getOrigin() {
-        return origin;
+    public String getContext() {
+        return context;
     }
 
     public String getAction() {
@@ -53,12 +57,12 @@ public class TokenViewResponse {
         return entityIndex;
     }
 
-    public void setContext(String context) {
-        this.context = context;
+    public void setRoute(String route) {
+        this.route = route;
     }
 
-    public void setOrigin(String origin) {
-        this.origin = origin;
+    public void setContext(String context) {
+        this.context = context;
     }
 
     public void setAction(String action) {

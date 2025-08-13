@@ -4,7 +4,8 @@ package controller;
 import controller.modelController.ModelController;
 import controller.exceptions.InvalidActionException;
 import controller.exceptions.InvalidContextException;
-import controller.globals.Contexts;
+import controller.globals.Actions;
+import controller.globals.Route;
 import controller.modelController.TokenModelFormResponse;
 import controller.modelController.TokenModelMenuResponse;
 import controller.modelController.TokenModelResponse;
@@ -36,8 +37,8 @@ public class MainController {
     public void init() {
 //        TokenFrameResponse viewToken = this.viewController.getResponse();
 
-        Logger.setEnable(true);
 
+        // começa em START
         TokenViewInstruction viewInstruction = new TokenViewInstruction();
     
         this.viewController.init();
@@ -47,20 +48,58 @@ public class MainController {
             try {
                 viewResponse = this.instructView(viewInstruction);
                 
-                if (viewResponse.getContext().equals(Contexts.EXIT)) {
+                if (viewResponse.getRoute().equals(Route.EXIT)) {
                     this.exitProgram();
                     return;
                 }
                 
+                Logger.log("MainController.init() -> viewResponse.getOrigin(): " + viewResponse.getContext());
                 
-                TokenModelResponse modelResponse = instructModel(viewResponse);
+                if (viewResponse.getAction().equals(Actions.NONE)) {
+                    TableData menuData = this.manageMenuRequest(viewResponse.getContext());
+                    viewInstruction = new TokenMenuInstruction(viewInstruction);
+                    ((TokenMenuInstruction) viewInstruction).setTableData(menuData);
+                    continue;
+                    
+                } else {
+                    EntityData formData = this.manageFormRequest(viewResponse.getContext(), viewResponse.getEntityIndex());
+                    viewInstruction = new TokenFormInstruction(viewInstruction);
+                    ((TokenFormInstruction) viewInstruction).setEntityData(formData);
+                    continue;
+                }
                 
-                viewInstruction = generateViewToken(modelResponse);
-                
-                Logger.log("MainController.init(): " + viewInstruction.toString());
-                
-                continue;
-                
+//                System.out.println("OXI SAIU DO SWITCH EM MainController.init()");
+//                
+//                
+//                
+//                if (viewResponse.getContext().equals(Route.EXIT)) {
+//                    this.exitProgram();
+//                    return;
+//                }
+//                String lastContext = viewResponse.getContext();
+//                
+//                
+//                
+//                TokenModelResponse modelResponse = instructModel(viewResponse);
+//                viewInstruction = generateViewToken(modelResponse);
+//                
+//                viewResponse = this.instructView(viewInstruction);
+//                
+//                if (viewResponse.getContext().equals(Route.EXIT)) {
+//                    this.exitProgram();
+//                    return;
+//                }                
+//                
+//                if (viewResponse.getAction().equals(Actions.BACK)) {
+//                    viewInstruction.setContext(lastContext);
+//                }
+//                
+//                
+//                
+//                Logger.log("MainController.init(): " + viewInstruction.toString());
+//                
+//                continue;
+//                
                 
             } catch (InvalidActionException | InvalidContextException ex) {
                 this.exitProgram();
@@ -84,13 +123,31 @@ public class MainController {
 
     }
     
+    private TokenViewInstruction manageStartRequest() {
+        return new TokenViewInstruction();
+    }
+    
+    private TableData manageMenuRequest(String origin) {
+        // abre menu 
+        // view -> (MENU, origin) : model -> (MENU, origin, Tdata) (Tdata)
+        return this.modelController.getTableData(origin);
+        
+//        ((TokenMenuInstruction) viewInstruction).setTableData(menuData);
+//        
+//        return viewInstruction;
+    }
+    
+    private EntityData manageFormRequest(String origin, Integer entityId) {
+        return this.modelController.getEntityData(origin, entityId);
+    }
+    
     private TokenModelResponse instructModel(TokenViewResponse viewRequest) {
         
         TokenModelResponse response = this.modelController.getResponse(viewRequest);
         
-//        if (viewRequest.getContext().equals(Contexts.START)) {
+//        if (viewRequest.getContext().equals(Route.START)) {
 //            response.setTitle("Usuário");
-//            response.setContext(Contexts.MENU);
+//            response.setContext(Route.MENU);
 //            response.setOrigin(Origins.USER);
 //            
 //            String[] cols = {"nome", "Gêneros Favoritos", "Livros Lidos"};
@@ -117,12 +174,12 @@ public class MainController {
     private TokenViewInstruction generateViewToken(TokenModelResponse modelResponse) {
         TokenViewInstruction viewInstruction;
                 
-        if (modelResponse.getContext().equals(Contexts.MENU)) {
+        if (modelResponse.getContext().equals(Route.MENU)) {
             viewInstruction = new TokenMenuInstruction();
             TableData data = ((TokenModelMenuResponse) modelResponse).getTableData();
             ((TokenMenuInstruction) viewInstruction).setTableData(data);
             
-        } else if (modelResponse.getContext().equals(Contexts.FORM)) {
+        } else if (modelResponse.getContext().equals(Route.FORM)) {
             viewInstruction = new TokenFormInstruction();
             EntityData data = ((TokenModelFormResponse) modelResponse).getEntityData();
             String action = ((TokenModelFormResponse) modelResponse).getAction();

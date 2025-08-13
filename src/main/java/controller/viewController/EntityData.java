@@ -7,13 +7,15 @@ import java.util.Hashtable;
 import model.entity.IEntity;
 
 /**
- *
+ * Classe para encapsular os dados de uma entidade na hora de 
+ * transportar entre camadas
+ * 
  * @author Sterbenxy13
+ * @param <E> Classe da entidade
  */
 public class EntityData<E extends IEntity> {
     private Dictionary<String, Object> data;
     private Integer entityIndex;
-    private java.lang.Class<E> entityClass;
     
     public EntityData() {
         this.data = new Hashtable<>();

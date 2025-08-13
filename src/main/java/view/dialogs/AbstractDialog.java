@@ -1,7 +1,6 @@
 
 package view.dialogs;
 
-import controller.viewController.TokenFrameResponse;
 import view.ResponsibleView;
 import view.tokens.TokenViewResponse;
 

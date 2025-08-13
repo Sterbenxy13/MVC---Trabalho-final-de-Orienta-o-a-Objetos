@@ -1,8 +1,8 @@
 
 package controller.modelController;
 
-import controller.globals.Contexts;
-import controller.globals.Origins;
+import controller.globals.Route;
+import controller.globals.Context;
 
 /**
  *
@@ -15,8 +15,8 @@ public class TokenModelResponse {
 
     public TokenModelResponse() {
         this.title = "NULL";
-        this.context = Contexts.NONE;
-        this.origin = Origins.NONE;
+        this.context = Route.NONE;
+        this.origin = Context.NONE;
     }
 
     public TokenModelResponse(String title, String context, String origin) {
